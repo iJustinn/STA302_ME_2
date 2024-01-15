@@ -24,12 +24,21 @@ install.packages("tidyverse")
 library("tidyverse")
 ```
 
+## Git Check
+
+```{r}
+use_git_config(
+  user.name = "iJustinn",
+  user.email = "ijustinzhong@gmail.com"
+)
+```
+
 ## Processing Data
 
 ```{r}
 Tickets_data <-
   read_csv(
-    file = "Police_Annual Statistical_Report_Tickets_Issued.csv",
+    file = "Tickets_Issued.csv",
     show_col_types = FALSE
   )
 ```
@@ -37,7 +46,6 @@ Tickets_data <-
 ```{r}
 head(Tickets_data)
 ```
-
 
 ```{r}
 Tickets_data <-
@@ -54,7 +62,7 @@ Tickets_data <-
     division
   )
 
-head(cleaned_elections_data)
+head(Tickets_data)
 ```
 
 ```{r}
@@ -91,28 +99,3 @@ Tickets_data |>
   theme_minimal() + 
   labs(x = "Year", y = "Number of Tickets") 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
