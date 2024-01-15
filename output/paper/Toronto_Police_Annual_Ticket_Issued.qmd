@@ -5,6 +5,69 @@ format: pdf
 editor: visual
 ---
 
+```{r}
+Tickets_data <-
+  read_csv(
+    file = "Tickets_Issued.csv",
+    show_col_types = FALSE
+  )
+
+Tickets_data <-
+  clean_names(Tickets_data)
+```
+
+The dataset contains records of issued tickets for each division in Toronto. We are interested in understanding how the amount of tickets varies between divisions and what's the trend across recent years.
+
+To do this, we need to first clean up the raw data and only keep the information we want. We can take a quick look at our data using head() which shows the first six rows in our data. We would know how the data looks like and the title of each column.
+
+```{r}
+head(Tickets_data)
+```
+
+After checking the data, now we want to make it easier for further processing. We use clean_names() from janitor to make all words lowercase and replacing all spaces with underline.
+
+```{r}
+Tickets_data <-
+  clean_names(Tickets_data)
+```
+
+As mentioned above, the foucs of our research will be the divisons and years. Thus, with select() from dplyr, we can get rid of all other columns and only focusing on two parameters: offence_year and division.
+
+```{r}
+Tickets_data <-
+  Tickets_data |>
+  select(
+    offence_year,
+    division
+  )
+```
+
+Before drawing graphs with our processed data, we know the graphs will use the two selected variables in X-axis and the total number of tickets as Y-axis. Therefore it is necessary to ensure that there are not too many unique values in these two variables that may affect the readability of the final bar chart due to too many bars. To do this, we can use unique().
+
+```{r}
+Tickets_data$offence_year |>
+  unique()
+
+Tickets_data$division |>
+  unique()
+```
+
+After the above inspection, it seems we do not need to do any more detailed processing, so we can draw the bar chart now. To generate the chart which we needed, we use ggplot2 from the tidyverse package, which build graphs by 'stacking' many layers. In the code, we can see the idea of layering by those '+', which called add operator. Since we want a bar chat, we will use geom_bar() from ggplot2.
+
+```{r}
+Tickets_data |>
+  ggplot(aes(x = division)) +
+  geom_bar() +
+  theme_minimal() + 
+  labs(x = "Division", y = "Number of Tickets") 
+
+Tickets_data |>
+  ggplot(aes(x = offence_year)) +
+  geom_bar() +
+  theme_minimal() + 
+  labs(x = "Year", y = "Number of Tickets") 
+```
+
 Upon examining the traffic ticket data issued across various divisions over several years, we discerned notable patterns in distribution and frequency. The data, sourced from "Tickets_Issued.csv," was processed using R to focus on the key variables of 'offence_year' and 'division'. Our bar chart for 'offence_year' displayed a consistent volume of tickets issued annually, suggesting steady traffic enforcement activity without significant fluctuations or anomalies. Conversely, the 'division' bar chart exhibited a heterogeneous distribution, with certain divisions like D32 and D41 showing a markedly higher incidence of tickets, potentially indicating traffic congestion or stricter enforcement protocols in those areas.
 
 These visualizations, crafted through ggplot2's minimalist theme, provided a clear and concise representation of the data. The year-on-year consistency in ticket issuance implies a stable traffic situation or enforcement policy, while the variation among divisions could be attributed to a myriad of factors, such as urban development, enforcement policy changes, or even reporting practices. These insights lay the groundwork for more granular analysis, perhaps scrutinizing the underlying causes of the disparities among divisions or assessing the impact of traffic law amendments over time.
